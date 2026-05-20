@@ -2,16 +2,60 @@ name: 02 - Manual
 
 on:
   workflow_dispatch:
+    inputs:
+      log_level:
+        description: 'Nivel de log'
+        required: true
+        default: 'info'
+        type: choice
+        options:
+          - debug
+          - info
+          - warn
+          - error
+
+      environment:
+        description: 'Entorno de despliegue'
+        type: environment
+      
+      dry_run:
+        description: '¿Ejecutar en modo dry-run?'
+        type: boolean
+        required: false
+        default: false
+      
+      reason:
+        description: 'Motivo de la ejecución manual'
+        type: string
+        required: false
+        default: 'Manual execution'
+
 
 jobs:
   manual:
     runs-on: ubuntu-24.04
     steps:
-      - name: Saludar
-        run: echo "Hello desde GitHub Actions, ejecutado manualmente!"
+      - name: Mostrar todos los inputs
+        env: 
+          LOG_LEVEL: ${{ inputs.log_level }}
+          ENVIRONMENT: ${{ inputs.environment }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          REASON: ${{ inputs.reason }}
+        run: |
+          echo "Log Level: $LOG_LEVEL"
+          echo "Environment: $ENVIRONMENT"
+          echo "Dry Run: $DRY_RUN"
+          echo "Reason: $REASON"
 
-      - name: Ver fecha del runner
-        run: date
-
-      - name: Ver archivos disponibles
-        run: ls -la
+      - name: Deploy (solo si no es dry-run)
+        if: ${{ !inputs.dry_run }}
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
+        run: |
+          echo "Desplegando a $ENVIRONMENT..."
+          # Aquí irían los comandos reales de despliegue
+          echo "¡Despliegue completado!"
+        
+      - name: Solo log si es dry-run
+        if: ${{ inputs.dry_run }}
+        run: echo "Modo dry-run activado. No se realizará el despliegue."
