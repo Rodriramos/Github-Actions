@@ -7,7 +7,7 @@ on:
     branches: [main]
   
 jobs:
-  ci:
+  frontend-lint:
     runs-on: ubuntu-24.04
     
     steps:
@@ -21,13 +21,64 @@ jobs:
           run_install: false
 
       - name: Instalar dependencias
-        run: pnpm install
+        run: pnpm install --frozen-lockfile 
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm lint:frontend
+
+  backend-lint:
+    runs-on: ubuntu-24.04
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Preparar pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+          run_install: false
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile 
+
+      - name: Lint
+        run: pnpm lint:backend
+  
+  frontend-test:
+    runs-on: ubuntu-24.04
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Preparar pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+          run_install: false
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile 
 
       - name: Test
-        run: pnpm test
+        run: pnpm test:frontend
+    
+  backend-test:
+    runs-on: ubuntu-24.04
 
-      - name: Build
-        run: pnpm build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Preparar pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+          run_install: false
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile 
+
+      - name: Test
+        run: pnpm test:backend
