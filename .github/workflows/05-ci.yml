@@ -17,16 +17,6 @@ jobs:
       - name: Lint
         run: pnpm lint:frontend
 
-  backend-lint:
-    runs-on: ubuntu-24.04
-    
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./.github/actions/setup-pnpm-ci-cd
-
-      - name: Lint
-        run: pnpm lint:backend
-  
   frontend-test:
     runs-on: ubuntu-24.04
     
@@ -36,7 +26,28 @@ jobs:
 
       - name: Test
         run: pnpm test:frontend
+  
+  frontend-build:
+    needs: [frontend-lint, frontend-test]
+    runs-on: ubuntu-24.04
     
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+
+      - name: Build
+        run: pnpm build:frontend
+
+  backend-lint:
+    runs-on: ubuntu-24.04
+    
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+
+      - name: Lint
+        run: pnpm lint:backend
+
   backend-test:
     runs-on: ubuntu-24.04
 
@@ -46,3 +57,17 @@ jobs:
 
       - name: Test
         run: pnpm test:backend
+
+  backend-build:
+    needs: [backend-lint, backend-test]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+
+      - name: Build
+        run: |
+          echo "Building backend and frontend..."
+          pnpm build:backend
+          pnpm start:backend
+          curl - X GET http://localhost:3000/health
