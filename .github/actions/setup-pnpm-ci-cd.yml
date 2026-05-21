@@ -1,0 +1,43 @@
+name: Setup pnpm for CI/CD
+description: Setup pnpm in GitHub Actions for CI/CD workflows
+
+inputs:
+  node-version:
+    description: 'Node.js version'
+    required: true
+    default: '24'
+  
+  pnpm-version:
+    description: 'pnpm version'
+    required: true
+    default: '10'
+
+outputs:
+  node-version:
+    description: 'The Node.js version that was set up'
+    value: ${{ steps.setup-pnpm.outputs.node-version }}
+
+  pnpm-version:
+    description: 'The pnpm version that was set up'
+    value: ${{ steps.setup-pnpm.outputs.pnpm-version }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js version
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'pnpm'
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v6
+      with:
+        version: ${{ inputs.pnpm-version }}
+        run_install: false
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
