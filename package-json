@@ -1,5 +1,5 @@
 {
-  "name": "09-ci-cd",
+  "name": "Github-Actions",
   "private": true,
   "type": "module",
   "scripts": {
