@@ -41,4 +41,6 @@ jobs:
             echo "::warning::No hay PERSONAL_ACCESS_TOKEN configurado. No se puede comentar como autor del repositorio."
             exit 0
           fi
-          GH_TOKEN="$AUTHOR_TOKEN" gh issue comment "$ISSUE_NUMBER" --body "Hola, soy el dueño del repositorio respondiendo personalmente. Mírate la guía de contribución." --repo "$GITHUB_REPOSITORY"
+          GH_TOKEN="$AUTHOR_TOKEN" gh issue comment "$ISSUE_NUMBER" \
+          --repo "$GITHUB_REPOSITORY" \
+          --body "Hola, soy el autor del repositorio. Gracias por tu comentario, lo revisaré pronto."
