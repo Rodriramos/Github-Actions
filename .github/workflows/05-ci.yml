@@ -11,14 +11,8 @@ jobs:
     runs-on: ubuntu-24.04
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup pnpm for CI/CD
-        uses: ./.github/actions/setup-pnpm-ci-cd
-        with:
-          node-version: 24
-          pnpm-version: 10
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
 
       - name: Lint
         run: pnpm lint:frontend
@@ -27,14 +21,8 @@ jobs:
     runs-on: ubuntu-24.04
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup pnpm for CI/CD
-        uses: ./.github/actions/setup-pnpm-ci-cd
-        with:
-          node-version: 24
-          pnpm-version: 10
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
 
       - name: Lint
         run: pnpm lint:backend
@@ -43,14 +31,8 @@ jobs:
     runs-on: ubuntu-24.04
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup pnpm for CI/CD
-        uses: ./.github/actions/setup-pnpm-ci-cd
-        with:
-          node-version: 24
-          pnpm-version: 10
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
 
       - name: Test
         run: pnpm test:frontend
@@ -59,14 +41,8 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup pnpm for CI/CD
-        uses: ./.github/actions/setup-pnpm-ci-cd
-        with:
-          node-version: 24
-          pnpm-version: 10
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
 
       - name: Test
         run: pnpm test:backend
