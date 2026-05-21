@@ -1,46 +1,40 @@
 name: 04 - Events
 
 on:
-  issues:
-    types: [opened, reopened]
-    
-  issue_comment:
-    types: [created]
+  workflow_dispatch:
 
 jobs:
   inspect-event:
     runs-on: ubuntu-24.04
     permissions:
       issues: write
-  
+      
     steps:
-      - name: Mostrar detalles del evento
+      - name: Inspect event
         run: |
-          echo "Evento: ${{ github.event_name }}"
-          echo "Acción: ${{ github.event.action }}"
-          echo "Número de issue: ${{ github.event.issue.number }}"
-          echo "Título de issue: ${{ github.event.issue.title }}"
-          echo "Comentario: ${{ github.event.comment.body }}"
+          echo "Event: ${{ github.event_name }}"
+          echo "Issue: ${{ github.event.issue.number }}"
+          echo "Comment: ${{ github.event.comment.body }}"
 
-      - name: Comentar como bot en Github Actions
-        if: github.event_name == 'issues' && github.event.action == 'created'
-        env: 
+      - name: Comentar como bot en GitHub Actions
+        if: github.event_name == 'issues' && github.event.action == 'opened'
+        env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-        run: |
-          gh issue comment "$ISSUE_NUMBER" --body "¡Gracias por abrir este issue! Estamos revisándolo." --repo "$GITHUB_REPOSITORY"
-          
+        run:
+          gh issue comment "$ISSUE_NUMBER" --body "Gracias por tu aporte. Nos pondremos en contacto contigo lo antes posible." --repo "$GITHUB_REPOSITORY"
+
       - name: Comentar como autor del repositorio
-        if: github.event_name == 'issue_comment' && github.event.action == 'created'
-        env: 
+        if: github.event_name == 'issues' && github.event.action == 'opened'
+        env:
           AUTHOR_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
           if [[ -z "$AUTHOR_TOKEN" ]]; then
-            echo "::warning::No hay PERSONAL_ACCESS_TOKEN configurado. No se puede comentar como autor del repositorio."
+            echo "::warning::No hay PERSONAL_ACCESS_TOKEN configurado. Se omite el comentario como autor."
             exit 0
           fi
           GH_TOKEN="$AUTHOR_TOKEN" gh issue comment "$ISSUE_NUMBER" \
-          --repo "$GITHUB_REPOSITORY" \
-          --body "Hola, soy el autor del repositorio. Gracias por tu comentario, lo revisaré pronto."
+            --repo "$GITHUB_REPOSITORY" \
+            --body "Hola, soy el dueño del repositorio respondiendo personalmente. Mírate la guía de contribución mientras tanto."
