@@ -21,7 +21,7 @@ jobs:
           run_install: false
 
       - name: Instalar dependencias
-        run: pnpm install --frozen-lockfile 
+        run: pnpm install --frozen-lockfile --config.minimum-release-age=0
 
       - name: Lint
         run: pnpm lint:frontend
@@ -40,7 +40,7 @@ jobs:
           run_install: false
 
       - name: Instalar dependencias
-        run: pnpm install --frozen-lockfile 
+        run: pnpm install --frozen-lockfile --config.minimum-release-age=0
 
       - name: Lint
         run: pnpm lint:backend
@@ -59,7 +59,7 @@ jobs:
           run_install: false
 
       - name: Instalar dependencias
-        run: pnpm install --frozen-lockfile --no-verify-store-integrity
+        run: pnpm install --frozen-lockfile --config.minimum-release-age=0
 
       - name: Test
         run: pnpm test:frontend
@@ -78,7 +78,7 @@ jobs:
           run_install: false
 
       - name: Instalar dependencias
-        run: pnpm install --frozen-lockfile 
+        run: pnpm install --frozen-lockfile --config.minimum-release-age=0
 
       - name: Test
         run: pnpm test:backend
