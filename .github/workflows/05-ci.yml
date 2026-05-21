@@ -12,7 +12,7 @@ jobs:
     
     steps:
       - name: Setup pnpm for CI/CD
-        uses: ./.github/actions/setup-pnpm-ci-cd@main
+        uses: ./.github/actions/setup-pnpm-ci-cd
         with:
           node-version: 24
           pnpm-version: 10
@@ -25,7 +25,7 @@ jobs:
     
     steps:
       - name: Setup pnpm for CI/CD
-        uses: ./.github/actions/setup-pnpm-ci-cd@main
+        uses: ./.github/actions/setup-pnpm-ci-cd
         with:
           node-version: 24
           pnpm-version: 10
@@ -38,7 +38,7 @@ jobs:
     
     steps:
       - name: Setup pnpm for CI/CD
-        uses: ./.github/actions/setup-pnpm-ci-cd@main
+        uses: ./.github/actions/setup-pnpm-ci-cd
         with:
           node-version: 24
           pnpm-version: 10
@@ -51,7 +51,7 @@ jobs:
 
     steps:
       - name: Setup pnpm for CI/CD
-        uses: ./.github/actions/setup-pnpm-ci-cd@main
+        uses: ./.github/actions/setup-pnpm-ci-cd
         with:
           node-version: 24
           pnpm-version: 10
